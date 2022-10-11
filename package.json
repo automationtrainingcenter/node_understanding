@@ -5,9 +5,14 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodeman index.js"
   },
- 
   "author": "Surya",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "nodeman": "^1.1.2"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
