@@ -16,7 +16,7 @@ let tours = JSON.parse(
 );
 
 // get all the tours
-app.get('/api/v1/tours', (req, res) => {
+let getTours = (req, res) => {
   res.status(200).json({
     status: 'success',
     results: tours.length,
@@ -24,10 +24,10 @@ app.get('/api/v1/tours', (req, res) => {
       tours,
     },
   });
-});
+};
 
-// create a new tours
-app.post('/api/v1/tours', (req, res) => {
+// create a new tour
+let createTour = (req, res) => {
   let newID = tours[tours.length - 1].id + 1;
   let newTour = Object.assign({ id: newID }, req.body);
   tours.push(newTour);
@@ -43,10 +43,10 @@ app.post('/api/v1/tours', (req, res) => {
       });
     }
   );
-});
+};
 
-// get tour details by ID
-app.get('/api/v1/tours/:id', (req, res) => {
+// get tour by id
+let getTourByID = (req, res) => {
   let _id = req.params.id * 1;
   let tour = tours.find((tr) => tr.id === _id);
   if (!tour) {
@@ -61,10 +61,10 @@ app.get('/api/v1/tours/:id', (req, res) => {
       tour,
     },
   });
-});
+};
 
-// patch requests
-app.patch('/api/v1/tours/:id', (req, res) => {
+// update tour by ID
+let updateTour = (req, res) => {
   let _id = req.params.id;
   if (isNaN(_id) || _id * 1 > tours.length) {
     return res.status(404).json({
@@ -78,10 +78,10 @@ app.patch('/api/v1/tours/:id', (req, res) => {
       tour: `Updated tour ... for ${_id}`,
     },
   });
-});
+};
 
-// delete requests
-app.delete('/api/v1/tours/:id', (req, res) => {
+// Delete tour by ID
+let deleteTour = (req, res) => {
   let _id = req.params.id;
   if (isNaN(_id) || _id * 1 > tours.length) {
     return res.status(404).json({
@@ -95,7 +95,21 @@ app.delete('/api/v1/tours/:id', (req, res) => {
       tour: `Deleted tour ... for ${_id}`,
     },
   });
-});
+};
+
+// app.get('/api/v1/tours', getTours);
+// app.post('/api/v1/tours', createTour);
+// app.get('/api/v1/tours/:id', gettourByID);
+// app.patch('/api/v1/tours/:id', updateTour);
+// app.delete('/api/v1/tours/:id', deleteTour);
+
+app.route('/api/v1/tours').get(getTours).post(createTour);
+
+app
+  .route('/api/v1/tours/:id')
+  .get(getTourByID)
+  .patch(updateTour)
+  .delete(deleteTour);
 
 app.listen(port, () => {
   console.log('App is running on port ', port);
