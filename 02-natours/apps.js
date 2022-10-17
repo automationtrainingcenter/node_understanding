@@ -8,6 +8,12 @@ let app = express();
 // add a middleware to read the data from the requests
 app.use(express.json());
 
+// create a own middleware
+app.use((req, res, next) => {
+  req.requestedAt = new Date().toISOString();
+  next();
+});
+
 let port = 3000;
 let __filename = fileURLToPath(import.meta.url);
 let __dirname = path.dirname(__filename);
@@ -19,6 +25,7 @@ let tours = JSON.parse(
 let getTours = (req, res) => {
   res.status(200).json({
     status: 'success',
+    requestedAt: req.requestedAt,
     results: tours.length,
     data: {
       tours,
@@ -37,6 +44,8 @@ let createTour = (req, res) => {
     (err) => {
       res.status(201).json({
         status: 'success',
+        requestedAt: req.requestedAt,
+
         data: {
           tour: newTour,
         },
