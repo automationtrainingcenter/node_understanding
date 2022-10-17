@@ -63,6 +63,40 @@ app.get('/api/v1/tours/:id', (req, res) => {
   });
 });
 
+// patch requests
+app.patch('/api/v1/tours/:id', (req, res) => {
+  let _id = req.params.id;
+  if (isNaN(_id) || _id * 1 > tours.length) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID',
+    });
+  }
+  res.status(200).json({
+    status: 'success',
+    data: {
+      tour: `Updated tour ... for ${_id}`,
+    },
+  });
+});
+
+// delete requests
+app.delete('/api/v1/tours/:id', (req, res) => {
+  let _id = req.params.id;
+  if (isNaN(_id) || _id * 1 > tours.length) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID',
+    });
+  }
+  res.status(204).json({
+    status: 'success',
+    data: {
+      tour: `Deleted tour ... for ${_id}`,
+    },
+  });
+});
+
 app.listen(port, () => {
   console.log('App is running on port ', port);
 });

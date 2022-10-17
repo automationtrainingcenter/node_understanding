@@ -2,17 +2,17 @@
   "name": "node_understanding",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./02-natours/app.js",
   "type": "module",
   "scripts": {
-    "start": "nodeman index.js"
+    "start": "nodemon"
   },
   "author": "Surya",
   "license": "ISC",
-  "devDependencies": {
-    "nodeman": "^1.1.2"
-  },
   "dependencies": {
     "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
   }
 }
