@@ -8,6 +8,27 @@ let tours = JSON.parse(
   fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`, 'utf-8')
 );
 
+// param middleware function will takes 4th argument value
+export function checkID(req, res, next, value) {
+  value = value * 1;
+  if (isNaN(value) || value > tours.length) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID',
+    });
+  }
+  next();
+}
+
+export function checkBody(req, res, next) {
+  if (!req.body.name || !req.body.price) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Missing either name or price in body',
+    });
+  }
+}
+
 // get all the tours
 export function getTours(req, res) {
   res.status(200).json({
@@ -44,12 +65,6 @@ export function createTour(req, res) {
 export function getTourByID(req, res) {
   let _id = req.params.id * 1;
   let tour = tours.find((tr) => tr.id === _id);
-  if (!tour) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID',
-    });
-  }
   res.status(200).json({
     status: 'success',
     data: {
@@ -61,12 +76,6 @@ export function getTourByID(req, res) {
 // update tour by ID
 export function updateTour(req, res) {
   let _id = req.params.id;
-  if (isNaN(_id) || _id * 1 > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID',
-    });
-  }
   res.status(200).json({
     status: 'success',
     data: {
@@ -78,12 +87,6 @@ export function updateTour(req, res) {
 // Delete tour by ID
 export function deleteTour(req, res) {
   let _id = req.params.id;
-  if (isNaN(_id) || _id * 1 > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID',
-    });
-  }
   res.status(204).json({
     status: 'success',
     data: {
