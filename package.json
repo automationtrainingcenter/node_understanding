@@ -5,7 +5,7 @@
   "main": "./02-natours/app.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon"
+    "start": "nodemon server.js"
   },
   "author": "Surya",
   "license": "ISC",
