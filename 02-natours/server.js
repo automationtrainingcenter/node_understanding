@@ -1,5 +1,14 @@
 import app from './app.js';
-let port = 3000;
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+
+dotenv.config({ path: './config.env' });
+
+const port = process.env.PORT || 3000;
+
+const DB = process.env.DB_URL.replace('<PASSWORD>', process.env.DB_PASSWORD);
+
+mongoose.connect(DB).then((con) => console.log(con));
 
 app.listen(port, () => {
   console.log('App is running on port ', port);
