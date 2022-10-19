@@ -7,58 +7,95 @@ let __filename = fileURLToPath(import.meta.url);
 let __dirname = path.dirname(__filename);
 
 // get all the tours
-export function getTours(req, res) {
-  res.status(200).json({
-    status: 'success',
-    requestedAt: req.requestedAt,
-    // results: tours.length,
-    // data: {
-    //   tours,
-    // },
-  });
+export async function getTours(req, res) {
+  try {
+    const tours = await Tour.find();
+    res.status(200).json({
+      status: 'success',
+      requestedAt: req.requestedAt,
+      results: tours.length,
+      data: {
+        tours,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
 }
 
 // create a new tour
-export function createTour(req, res) {
-  res.status(201).json({
-    status: 'success',
-    requestedAt: req.requestedAt,
-    // data: {
-    //   tour: newTour,
-    // }
-  });
+export async function createTour(req, res) {
+  try {
+    const newTour = await Tour.create(req.body);
+    res.status(201).json({
+      status: 'success',
+      requestedAt: req.requestedAt,
+      data: {
+        tour: newTour,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
 }
 
 // get tour by id
-export function getTourByID(req, res) {
-  let _id = req.params.id * 1;
-  // let tour = tours.find((tr) => tr.id === _id);
-  res.status(200).json({
-    status: 'success',
-    // data: {
-    //   tour,
-    // },
-  });
+export async function getTourByID(req, res) {
+  try {
+    const tour = await Tour.findById(req.params.id);
+    res.status(200).json({
+      status: 'success',
+      data: {
+        tour,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
 }
 
 // update tour by ID
-export function updateTour(req, res) {
-  let _id = req.params.id;
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour: `Updated tour ... for ${_id}`,
-    },
-  });
+export async function updateTour(req, res) {
+  try {
+    const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    res.status(200).json({
+      status: 'success',
+      data: {
+        tour,
+      },
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
 }
 
 // Delete tour by ID
-export function deleteTour(req, res) {
-  let _id = req.params.id;
-  res.status(204).json({
-    status: 'success',
-    data: {
-      tour: `Deleted tour ... for ${_id}`,
-    },
-  });
+export async function deleteTour(req, res) {
+  try {
+    await Tour.findByIdAndDelete(req.params.id);
+    res.status(204).json({
+      status: 'success',
+      data: null,
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: err.message,
+    });
+  }
 }
